@@ -173,24 +173,8 @@ class Main:
     if parts[0] == "December":
       month = "12"
 
-    if parts[1] == "1":
-      day = "01"
-    if parts[1] == "2":
-      day = "02"
-    if parts[1] == "3":
-      day = "03"
-    if parts[1] == "4":
-      day = "04"
-    if parts[1] == "5":
-      day = "05"
-    if parts[1] == "6":
-      day = "06"
-    if parts[1] == "7":
-      day = "07"
-    if parts[1] == "8":
-      day = "08"
-    if parts[1] == "9":
-      day = "09"
+    if parts[1].find('[1-9]\d'):
+      day = '0%s' % parts[1]
 
     _date = day + "." + month + "." + year
     _year = year
