@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="plugin.video.videocopilot"
-  version="1.1.2"
+  version="2.0.0"
   name="Video Copilot"
   provider-name="queeup">
   <requires>
     <import addon="xbmc.python"
-            version="1.0"/>
+            version="2.0"/>
     <import addon="script.module.beautifulsoup"
-            version="3.0.8"/>
+            version="3.2.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource"
              library="addon.py">

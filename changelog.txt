@@ -1,39 +1,44 @@
 Video Copilot Changelog:
 ---------------------
+v2.0.0 (09.05.2012)
+-code cleanup and reorder with pep8 guides
+-shorten and change 1 digit day number to 2 digit.
+-updated beautifulsoup to 3.2.0
+-updated xbmc.python to 2.0
+
 v1.1.2 (26.10.2011)
--added  : Cache handler
--fixed  : Site changes
+-added cache handler
+-fixed site changes
 
 v1.1.1 (20.07.2010)
--removed    : Some language strings
--changed    : Addon icon
+-removed some language strings
+-changed addon icon
 
 v1.1.0 (22.04.2010)
--removed    : Settings
--other      : Cosmetic
+-removed settings
+-cosmetic
 
 v1.0.9 (22.03.2010)
--removed    : Debug setting hidden from users.
--other      : Cosmetic
+-removed debug setting hidden from users.
+-cosmetic
 
 v1.0.8 (12.11.2009)
--fixed      : update check
+-fixed update check
 
 v1.0.7 (11.11.2009)
--added      : Update check option, Thanks to @stacked for this idea and code
+-added update check option, Thanks to @stacked for this idea and code
 
 v1.0.6 (02.11.2009)
--added      : Debug option
--fixed      : Plugin working now
+-added debug option
+-fixed plugin working now
 
 v1.0.5 (18.06.2009)
--other      : Date correction
+-date correction
 
 v1.0.4 (18.06.2009)
--other      : Debug closed
+-debug closed
 
 v1.0.3 (17.06.2009)
--changed    : code structure change entirely
--added      : descriptions
--fixed      : thumbnails
-
+-changed code structure change entirely
+-added descriptions
+-fixed thumbnails
