@@ -1,5 +1,8 @@
 Video Copilot Changelog:
 ---------------------
+v2.0.1 (26.05.2012)
+-fix slef.Arguments to self.arguments definition. 
+
 v2.0.0 (09.05.2012)
 -code cleanup and reorder with pep8 guides
 -shorten and change 1 digit day number to 2 digit.
