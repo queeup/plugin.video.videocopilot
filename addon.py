@@ -114,7 +114,7 @@ class Main:
     year = unicode(xbmc.getInfoLabel("ListItem.Year"), "utf-8")
     studio = unicode(xbmc.getInfoLabel("ListItem.Studio"), "utf-8")
     # Parse HTML results page...
-    html = urllib.urlopen(self.Arguments('url')).read()
+    html = urllib.urlopen(self.arguments('url')).read()
     # Get FLV video...
     match = re.compile('so.addVariable\(\'file\'\,\'(.+?)\'\)\;').findall(html)
     for _url in match:
