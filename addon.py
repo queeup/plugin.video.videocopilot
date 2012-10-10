@@ -109,48 +109,6 @@ class Main:
     xbmcPlayer = xbmc.Player()
     xbmcPlayer.play(video_url, listitem)
 
-  def convert_text_to_date(self, date):
-    if not date:
-      return "unknown date"
-
-    parts = date.split(" ")
-    month = parts[0]
-    day = parts[1]
-    year = parts[2]
-
-    if parts[0] == "January":
-      month = "01"
-    if parts[0] == "February":
-      month = "02"
-    if parts[0] == "March":
-      month = "03"
-    if parts[0] == "April":
-      month = "04"
-    if parts[0] == "May":
-      month = "05"
-    if parts[0] == "June":
-      month = "06"
-    if parts[0] == "July":
-      month = "07"
-    if parts[0] == "August":
-      month = "08"
-    if parts[0] == "September":
-      month = "09"
-    if parts[0] == "October":
-      month = "10"
-    if parts[0] == "November":
-      month = "11"
-    if parts[0] == "December":
-      month = "12"
-
-    if parts[1].find('[1-9]\d'):
-      day = '0%s' % parts[1]
-
-    _date = day + "." + month + "." + year
-    _year = year
-
-    return _date, _year
-
   def arguments(self, arg):
     _arguments = dict(part.split('=') for part in sys.argv[2][1:].split('&'))
     return urllib.unquote_plus(_arguments[arg])
