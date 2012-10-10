@@ -1,5 +1,11 @@
-Video Copilot Changelog:
----------------------
+plugin.video.videocopilot:
+--------------------------
+v2.0.2 (10.09.2012)
+-fix video list
+-cosmetic
+-removed sort metods
+-remove unnecessary def
+
 v2.0.1 (26.05.2012)
 -fix slef.Arguments to self.arguments definition. 
 
