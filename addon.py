@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-from BeautifulSoup import BeautifulSoup as BS
+from BeautifulSoup import SoupStrainer, BeautifulSoup as BS
 import hashlib
 import os
 import shutil
@@ -45,54 +45,34 @@ class Main:
 
   def list_contents(self):
     if DEBUG:
-      self.log('List Videos')
+      self.log('list_contents')
     baseurl = 'http://www.videocopilot.net/tutorials/'
-    results = []
     # Parse HTML results page...
-    html = fetcher.fetch(baseurl, CACHE_TIME)
-    soup = BS(html)
-    table_forumline_altlist = soup.findAll("div", {"style": re.compile('float:left;border-left:solid 1px.+?;border-bottom:solid 1px.+?;border-right:solid 1px.+?;height:92px;width:.+?;padding-top:18px;background:url.+?')})
-    for table_forumline_altlist_tr in table_forumline_altlist:
-      table_forumline_altlist_tr_tds = table_forumline_altlist_tr.findAll(["div"])
-      url = table_forumline_altlist_tr_tds[0].a["href"]
-      thumb = table_forumline_altlist_tr_tds[0].a.img["src"]
-      date = table_forumline_altlist_tr_tds[1].string
-      name = table_forumline_altlist_tr_tds[3].a.string
-      desc = table_forumline_altlist_tr_tds[5].renderContents()
-      desc = re.sub("&bull;", '', str(desc))
-      desc = re.sub("<br />", '.', str(desc))
-      desc = re.sub("\t*", '', str(desc))
-      desc = re.sub("\n", '', str(desc))
-      #results.append((thumb, name, url, date, desc))
-      #for thumb, name, url, date, desc in results:
-      _thumb = thumb.replace('list', 'large')
-      _name = name
-      _desc = desc
-      _url = url.replace('tutorials', 'tutorial')
-      date = re.sub('th,|st,|rd,|nd,', '', date)
-      _date, _year = self.convert_text_to_date(date)
-      _studio = 'www.videocopilot.net'
-      _director = 'Andrew Kramer'
-      #_year = 0
-      #_year = int(_date.split(".")[ 2 ])
-      #_year = re.compile('(\d{4})').findall(date)
-      #_year = year[0]
+    html = fetcher.fetch(baseurl)
+    soup = BS(html, parseOnlyThese=SoupStrainer('div', 'tutorials-all-container'))
+
+    for entry in soup.findAll('div', 'tutorials-all-item'):
+      title = entry('div', 'tutorials-all-item-title')[0].a.string
+      time = entry('div', 'tutorials-all-item-time')[0].string
+      thumb = entry('a', 'tutorials-all-image')[0]['style'].replace('background:url(', '').replace(')', '').replace('/popular/', '/large/')
+      url = entry('a', 'tutorials-all-image')[0]['href'].replace('tutorials', 'tutorial')
+      desc = entry('div', 'tutorials-all-item-subtitle')[0].string.strip()
+      studio = 'www.videocopilot.net'
+      director = 'Andrew Kramer'
 
       # Add Videos to XBMC
-      listitem = xbmcgui.ListItem(_name, iconImage="DefaultVideoBig.png", thumbnailImage=_thumb)
-      listitem.setInfo(type="Video",
-                       infoLabels={"Title": _name,
-                                   "Label": _name,
-                                   "Plot": _desc,
-                                   "PlotOutline": _desc,
-                                   "Director": _director,
-                                   "Year": _year,
-                                   "Date": _date,
-                                   "Studio": _studio,
-                                   "copyright": _director,
-                                   "tvshowtitle": 'Video Copilot'})
+      listitem = xbmcgui.ListItem(title, iconImage='DefaultVideoBig.png', thumbnailImage=thumb)
+      listitem.setInfo(type='video',
+                       infoLabels={'title': title,
+                                   'duration': time,
+                                   'plot': desc,
+                                   'plotoutline': desc,
+                                   'director': director,
+                                   'studio': studio,
+                                   'copyright': director,
+                                   'tvshowtitle': 'Video Copilot'})
       url = "%s?action=play&url=%s" % \
-            (sys.argv[0], urllib.quote_plus(_url))
+            (sys.argv[0], urllib.quote_plus(url))
       xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=listitem, isFolder=False)
     # Sort methods and content type...
     xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
@@ -110,8 +90,6 @@ class Main:
     thumbnail = xbmc.getInfoImage("ListItem.Thumb")
     plot = unicode(xbmc.getInfoLabel("ListItem.Plot"), "utf-8")
     director = unicode(xbmc.getInfoLabel("ListItem.Director"), "utf-8")
-    date = unicode(xbmc.getInfoLabel("ListItem.Date"), "utf-8")
-    year = unicode(xbmc.getInfoLabel("ListItem.Year"), "utf-8")
     studio = unicode(xbmc.getInfoLabel("ListItem.Studio"), "utf-8")
     # Parse HTML results page...
     html = urllib.urlopen(self.arguments('url')).read()
@@ -119,25 +97,17 @@ class Main:
     match = re.compile('so.addVariable\(\'file\'\,\'(.+?)\'\)\;').findall(html)
     for _url in match:
       video_url = _url
-    # Create video playlist...
-    playlist = xbmc.PlayList(1)
-    playlist.clear()
     # only need to add label, icon and thumbnail, setInfo() and addSortMethod() takes care of label2
     listitem = xbmcgui.ListItem(title, iconImage="DefaultVideo.png", thumbnailImage=thumbnail)
     # set the key information
-    listitem.setInfo("Video", {"Title": title,
-                               "Label": title,
-                               "Director": director,
-                               "Plot": plot,
-                               "PlotOutline": plot,
-                               "Date": date,
-                               #"Year" : year,
-                               "Studio": studio})
-    # add item to our playlist
-    playlist.add(video_url, listitem)
+    listitem.setInfo('video', {'title': title,
+                               'director': director,
+                               'plot': plot,
+                               'plotoutline': plot,
+                               'studio': studio})
     # Play video...
     xbmcPlayer = xbmc.Player()
-    xbmcPlayer.play(playlist)
+    xbmcPlayer.play(video_url, listitem)
 
   def convert_text_to_date(self, date):
     if not date:
