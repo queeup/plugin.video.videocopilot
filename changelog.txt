@@ -1,5 +1,8 @@
 plugin.video.videocopilot:
 --------------------------
+v2.0.3 (10.01.2013)
+-xbmc label2 duration removed.
+
 v2.0.2 (10.09.2012)
 -fix video list
 -cosmetic
