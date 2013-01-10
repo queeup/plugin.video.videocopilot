@@ -52,7 +52,7 @@ class Main:
 
     for entry in soup.findAll('div', 'tutorials-all-item'):
       title = entry('div', 'tutorials-all-item-title')[0].a.string
-      time = entry('div', 'tutorials-all-item-time')[0].string
+      # time = entry('div', 'tutorials-all-item-time')[0].string
       thumb = entry('a', 'tutorials-all-image')[0]['style'].replace('background:url(', '').replace(')', '').replace('/popular/', '/large/')
       url = entry('a', 'tutorials-all-image')[0]['href'].replace('tutorials', 'tutorial')
       desc = entry('div', 'tutorials-all-item-subtitle')[0].string.strip()
@@ -63,7 +63,7 @@ class Main:
       listitem = xbmcgui.ListItem(title, iconImage='DefaultVideoBig.png', thumbnailImage=thumb)
       listitem.setInfo(type='video',
                        infoLabels={'title': title,
-                                   'duration': time,
+                                   # 'duration': time,
                                    'plot': desc,
                                    'plotoutline': desc,
                                    'director': director,
